@@ -1,4 +1,8 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "5"
+# ///
 # MAGIC %md
 # MAGIC ### Example Exploratory Notebook
 # MAGIC
@@ -16,4 +20,18 @@ sys.path.append("/Workspace/study_workspace/study_projects/SDP/user_sdp_example"
 
 # !!! Before performing any data analysis, make sure to run the pipeline to materialize the sample datasets. The tables referenced in this notebook depend on that step.
 
-display(spark.sql("SELECT * FROM workspace.default.sample_aggregation_user_sdp_example"))
+display(spark.sql("SELECT * FROM study_catalog.sdp_schema_example.sample_aggregation_user_sdp_example"))
+
+# COMMAND ----------
+
+query = """
+SELECT u.name, COUNT(b.booking_id) AS bookings_count
+FROM study_catalog.sdp_schema_example.user_cleaned u
+JOIN samples.wanderbricks.bookings b ON u.user_id = b.user_id
+GROUP BY u.name
+ORDER BY bookings_count DESC
+LIMIT 100
+"""
+
+df = spark.sql(query)
+display(df)

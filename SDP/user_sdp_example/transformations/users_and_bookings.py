@@ -11,7 +11,7 @@ def users_and_bookings():
             .groupBy(col("name"))
             .agg(count("booking_id").alias("bookings_count"))
             .orderBy(desc("bookings_count"))
-            .limit(1000)
+            .limit(100)
             #.select("user_id", "user_name", "booking_id", "booking_date")
 
     )

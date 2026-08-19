@@ -33,7 +33,7 @@
 # MAGIC   operations = OrderedDict([("APPEND", 0.5),("DELETE", 0.1),("UPDATE", 0.3),(None, 0.01)])
 # MAGIC   fake_operation = F.udf(lambda:fake.random_elements(elements=operations, length=1)[0])
 # MAGIC   fake_id = F.udf(lambda: str(uuid.uuid4()) if random.uniform(0, 1) < 0.98 else None)
-# MAGIC
+# MAGIC   
 # MAGIC   df = spark.range(0, 100000).repartition(100)
 # MAGIC   df = df.withColumn("id", fake_id())
 # MAGIC   df = df.withColumn("firstname", fake_firstname())
@@ -47,5 +47,15 @@
 # COMMAND ----------
 
 df_raw = spark.read.format("json").load("/Volumes/study_catalog/sdp_schema_example/raw_data/customers")
-display(df_raw)
+#display(df_raw)
 df_raw.count()
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from study_catalog.sdp_schema_example.customers_history_agg where id = '8c909bd1-5c23-431c-ba5d-3efb3cafff1d'
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select * from study_catalog.sdp_schema_example.customers_cdc_clean where id = '8c909bd1-5c23-431c-ba5d-3efb3cafff1d'
